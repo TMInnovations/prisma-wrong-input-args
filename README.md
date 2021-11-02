@@ -25,7 +25,7 @@ npx prisma db push
 npm run start:debug
 ```
 
-5. Open `https://localhost:3000/graphql` and run:
+5. Open http://localhost:3000/graphql and run:
 
 ```
 
