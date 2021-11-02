@@ -1,0 +1,65 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestjsgraphql {
+  provider                              = "node node_modules/prisma-nestjs-graphql"
+  fields_Validator_from                 = "class-validator"
+  fields_Validator_input                = true
+  requireSingleFieldsInWhereUniqueInput = true
+  emitSingle                            = true
+  emitCompiled                          = true
+  purgeOutput                           = true
+  output                                = "../node_modules/@prisma/client/nestjs-graphql"
+}
+
+model Customer {
+  /// @HideField({ match: 'Customer*Create*Input' })
+  number String @id
+
+  name String?
+
+  // RELATIONS
+
+  // BI-DIRECTIONAL RELATIONS
+
+  parcels Parcel[]
+}
+
+model Parcel {
+  id String @id @default(cuid())
+
+
+
+  // RELATIONS
+
+  customer        Customer? @relation(fields: [customer_number], references: [number])
+  customer_number String?
+
+
+  // INVERSE RELATIONS
+
+  scans Scan[]
+
+}
+
+model Scan {
+  id String @id @default(cuid())
+
+
+  data String
+
+
+  // RELATIONS
+
+
+  // INVERSE RELATIONS
+
+  parcel    Parcel? @relation(fields: [id_parcel], references: [id])
+  id_parcel String?
+}
